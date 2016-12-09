@@ -1,0 +1,7 @@
+/vendor
+/vendor/
+vendor
+/app/cache/
+/app/config.php
+/.idea/
+/bootstrap/config.php

@@ -1,0 +1,13 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+<div class="container">
+     <div class="invoice-box">
+        <div class="text-center">
+            <h1>{{seller_message}}</h1><br>
+            <h4>Thank you, invoice #{{invoice_number}} has now been paid in full.</h4><br>
+            <h4>A receipt has been emailed to {{receipt_email}}.</h4>
+        </div>
+      </div>
+</div>
+{% endblock %}

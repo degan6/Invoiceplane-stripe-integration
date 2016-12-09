@@ -1,0 +1,124 @@
+{% extends 'templates/app.twig' %}
+
+{% block content %}
+<div class="container">
+    {% if invoice_status_id == 4 %}
+    <div class="alert alert-info text-center">
+        Good news! This Invoice has been paid in full.
+    </div>
+    {% elseif invoice_overdue == 1 %}
+
+    
+        <div class="alert alert-danger text-center">
+            This invoice is overdue, please pay immediately to avoid late charges.
+        </div>
+    {% endif %}
+</div>
+    <div class="invoice-box">
+        <table cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="4">
+                    <table>
+                        <tr>
+                            <td class="title">
+                                <img src="http://nextstepwebs.com/images/logo.png" style="width:100%; max-width:300px;">
+                            </td>
+                            
+                            <td>
+                                Invoice #: {{invoice_number}}<br>
+                                Created: {{invoice_date_created}}<br>
+                                Due: {{invoice_date_due}}
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            
+            <tr class="information">
+                <td colspan="4">
+                    <table>
+                        <tr>
+                            <td>
+                                ***REMOVED***<br>
+                                ***REMOVED***<br>
+                                ***REMOVED***<br>
+                                <a href="mailto:***REMOVED***?subject=Invoice {{ invoice_number }}">***REMOVED***</a><br>
+                            </td>    
+                            <td>
+                                <b>Bill To:</b><br>
+                                {{client_name}}<br>
+                                {% if client_address_1 is not empty %}{{client_address_1}}<br>{% endif %}
+                                {% if client_address_2 is not empty %}{{client_address_2}}<br>{% endif %}
+                                {% if client_city is not empty %}{{client_city}},{% endif %} {% if client_state is not empty %}{{client_state}}{% endif %} {% if client_zip is not empty %}{{client_zip}}<br>{% endif %}
+                                {% if client_phone is not empty %}{{client_phone}}<br>{% endif %}
+                                {% if client_email is not empty %}{{client_email}}</b>{% endif %}
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            
+            <tr class="heading">
+                <td>Item</td>
+                <td>Quanity</td>
+                <td>Price</td>
+                <td>Total</td>
+            </tr>
+            
+            {% for item in invoiceItems %}
+                <tr class="item">
+                    <td>{{item.item_name|e}}<br><span class="desc">{{item.item_description|e}}</span></td>
+                    <td>{{item.item_price|e}}</td>
+                    <td>{{item.item_quantity|e}}</td>
+                    <td>{{item.item_price|e}}</td>
+                </tr>
+            {% endfor %}
+
+            <tr class="total">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
+                   Total: ${{invoice_total}}<br>
+                   Paid: ${{invoice_paid}}<br>
+                   <b>Balnce: ${{invoice_balance}}</b><br>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="invoice-box-under">
+        <div class="row">
+            <div>
+            <h3 class="text-center">Click Pay with Card to pay this invoice now.</h3>
+            </div>
+            <div class="pull-right">
+                <form action="{{ path_for('stripetoken', {'invoiceURLKey' : invoiceKey}) }}" method="post">
+                  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                          data-key="{{ stripe_pub_key }}"
+                          data-name="Pay ***REMOVED***"
+                          data-description="Invoice Number {{invoice_number}}"
+                          data-amount="{{invoice_balance * 100}}"
+                          data-locale="auto"
+                          data-zip-code="true"
+                          data-billing-address="true"
+                          data-email="{{client_email}}"
+                          
+                          >
+                    </script>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}
