@@ -2,76 +2,74 @@
 
 namespace App\Controllers;
 
-use App\Models\CNAM;
-use App\Models\User;
-
-
 class HomeController extends Controller
 {
 
     public function index($request, $response, $args)
     {
-      $invoiceKey = trim($args['invoiceURLKey']);
-    	$invoiceKey = filter_var($invoiceKey, FILTER_SANITIZE_STRING);
+        $invoiceKey = trim($args['invoiceURLKey']);
+        $invoiceKey = filter_var($invoiceKey, FILTER_SANITIZE_STRING);
 
-      $_SESSION['invoiceKey'] = $invoiceKey;
+        $_SESSION['invoiceKey'] = $invoiceKey;
 
-    	$db = $this->container->db;
+        $db = $this->container->db;
       
-      //invoice
-      $db->join("invoice_amounts inta", "inta.invoice_id=ivn.invoice_id", "LEFT");
-      $db->where('invoice_url_key', $invoiceKey);
-      $invoice = $db->get('invoices ivn');
+         //invoice
+        $db->join("invoice_amounts inta", "inta.invoice_id=ivn.invoice_id", "LEFT");
+        $db->where('invoice_url_key', $invoiceKey);
+        $invoice = $db->get('invoices ivn');
 
-      //invoice items
-      $db->where('invoice_id', $invoice[0]['invoice_id']);
-      $db->orderBy('item_order', 'ASC');
-      $invoiceItems = $db->get('invoice_items');
+        if (!$invoice)
+        {
+            return $response->withRedirect($this->router->pathFor('notFound'));
+        }
 
-      //client
-      $db->where('client_id', $invoice[0]['client_id']);
-      $client = $db->get('clients');
-      
-      //var_dump($invoice);
+        //invoice items
+        $db->where('invoice_id', $invoice[0]['invoice_id']);
+        $db->join("invoice_item_amounts intaa", "intaa.item_id=init.item_id", "LEFT");
+        $db->orderBy('item_order', 'ASC');
+        $invoiceItems = $db->get('invoice_items init');
 
-      $dueDate = new \DateTime($invoice[0]['invoice_date_due']);
-      $now     = new \DateTime('now');
-      $interval = $dueDate->diff($now);
+        //client
+        $db->where('client_id', $invoice[0]['client_id']);
+        $client = $db->get('clients');
 
-      $data = [
-        'stripe_pub_key' => STRIPE_PUB_KEY,
-        'invoice_status_id' => $invoice[0]['invoice_status_id'],
-        'invoiceKey'       => $invoiceKey,
-        'invoice_date_created' => date_format(date_create($invoice[0]['invoice_date_created']), "F d, Y"),
-        'invoice_date_due' => date_format(date_create($invoice[0]['invoice_date_due']), "F d, Y"),
-        'invoice_number' => $invoice[0]['invoice_number'],
-        'invoice_item_subtotal' => $invoice[0]['invoice_item_subtotal'],
-        'invoice_tax_total' => $invoice[0]['invoice_tax_total'],
-        'invoice_total' => $invoice[0]['invoice_total'],
-        'invoice_paid' => $invoice[0]['invoice_paid'],
-        'invoice_balance' => $invoice[0]['invoice_balance'],
-        'invoiceItems'  => $invoiceItems,
-        'invoice_overdue' => $now > $dueDate,
-        'client_name' => $client[0]['client_name'],
-        'client_address_1' => $client[0]['client_address_1'],
-        'client_address_2' => $client[0]['client_address_2'],
-        'client_city' => $client[0]['client_city'],
-        'client_state' => $client[0]['client_state'],
-        'client_zip' => $client[0]['client_zip'],
-        'client_phone' => $client[0]['client_phone'],
-        'client_email' => $client[0]['client_email'],
-        'client_web' => $client[0]['client_web']
-      
-      ];
-        
-        
-      return $this->view->render($response, 'home.twig', $data);
+         //var_dump($invoice);
+
+        $dueDate = new \DateTime($invoice[0]['invoice_date_due']);
+        $now     = new \DateTime('now');
+        $interval = $dueDate->diff($now);
+
+         $data = [
+            'stripe_pub_key' => STRIPE_PUB_KEY,
+            'invoice_status_id' => $invoice[0]['invoice_status_id'],
+            'invoiceKey'       => $invoiceKey,
+            'invoice_date_created' => date_format(date_create($invoice[0]['invoice_date_created']), "F d, Y"),
+            'invoice_date_due' => date_format(date_create($invoice[0]['invoice_date_due']), "F d, Y"),
+            'invoice_number' => $invoice[0]['invoice_number'],
+            'invoice_item_subtotal' => $invoice[0]['invoice_item_subtotal'],
+            'invoice_tax_total' => $invoice[0]['invoice_tax_total'],
+            'invoice_total' => $invoice[0]['invoice_total'],
+            'invoice_paid' => $invoice[0]['invoice_paid'],
+            'invoice_balance' => $invoice[0]['invoice_balance'],
+            'invoiceItems'  => $invoiceItems,
+            'invoice_overdue' => $now > $dueDate,
+            'client_name' => $client[0]['client_name'],
+            'client_address_1' => $client[0]['client_address_1'],
+            'client_address_2' => $client[0]['client_address_2'],
+            'client_city' => $client[0]['client_city'],
+            'client_state' => $client[0]['client_state'],
+            'client_zip' => $client[0]['client_zip'],
+            'client_phone' => $client[0]['client_phone'],
+            'client_email' => $client[0]['client_email'],
+            'client_web' => $client[0]['client_web'],
+            'title' => 'Invoice #' . $invoice[0]['invoice_number'] . ' | Degan.org'
+        ];
+
+         return $this->view->render($response, 'home.twig', $data);
     }
 
-    public function noURLKey($request, $response)
-    {
-        
-    }
+
 
     public function paid($request, $response, $args)
     {
@@ -90,7 +88,8 @@ class HomeController extends Controller
 
         $data = ['seller_message' => $c->outcome['seller_message'], 
                   'invoice_number' => $invoice[0]['invoice_number'], 
-                  'receipt_email' => $c->receipt_email
+                  'receipt_email' => $c->receipt_email,
+                  'title' => 'Invoice #' . $invoice[0]['invoice_number'] . ' | Degan.org'
                 ];
 
         unset($_SESSION['charge']);
@@ -109,6 +108,11 @@ class HomeController extends Controller
         $db->join("invoice_amounts inta", "inta.invoice_id=ivn.invoice_id", "LEFT");
         $db->where('invoice_url_key', $invoiceKey);
         $invoice = $db->get('invoices ivn');
+
+        if (!$invoice)
+        {
+            return $response->withRedirect($this->router->pathFor('notFound'));
+        }
 
         //client
         $db->join("client_custom cc", "cc.client_id=cs.client_id", "LEFT");
@@ -156,5 +160,10 @@ class HomeController extends Controller
 
         return $response->withRedirect($this->router->pathFor('paid', ['invoiceURLKey' => $invoiceKey]));
     }
-    
+
+    public function noURLKey($request, $response)
+    {
+        $d = ['title' => 'Can\'t find that Invoice | Degan.org'];
+        return $this->view->render($response, 'noURLKey.twig', $d);
+    }
 }

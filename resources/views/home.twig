@@ -20,8 +20,11 @@
                 <td colspan="4">
                     <table>
                         <tr>
-                            <td class="title">
-                                <img src="http://nextstepwebs.com/images/logo.png" style="width:100%; max-width:300px;">
+                            <td >
+                                ***REMOVED***<br>
+                                ***REMOVED***<br>
+                                ***REMOVED***<br>
+                                <a href="mailto:***REMOVED***?subject=Invoice {{ invoice_number }}">***REMOVED***</a><br>
                             </td>
                             
                             <td>
@@ -42,13 +45,7 @@
                 <td colspan="4">
                     <table>
                         <tr>
-                            <td>
-                                ***REMOVED***<br>
-                                ***REMOVED***<br>
-                                ***REMOVED***<br>
-                                <a href="mailto:***REMOVED***?subject=Invoice {{ invoice_number }}">***REMOVED***</a><br>
-                            </td>    
-                            <td>
+                            <td rowspan="4" class="pull-right" style="text-align:right">
                                 <b>Bill To:</b><br>
                                 {{client_name}}<br>
                                 {% if client_address_1 is not empty %}{{client_address_1}}<br>{% endif %}
@@ -56,11 +53,7 @@
                                 {% if client_city is not empty %}{{client_city}},{% endif %} {% if client_state is not empty %}{{client_state}}{% endif %} {% if client_zip is not empty %}{{client_zip}}<br>{% endif %}
                                 {% if client_phone is not empty %}{{client_phone}}<br>{% endif %}
                                 {% if client_email is not empty %}{{client_email}}</b>{% endif %}
-                            </td>
-                            <td>
-                            </td>
-                            <td>
-                            </td>
+
                         </tr>
                     </table>
                 </td>
@@ -70,15 +63,15 @@
                 <td>Item</td>
                 <td>Quanity</td>
                 <td>Price</td>
-                <td>Total</td>
+                <td style="text-align:right">Total</td>
             </tr>
             
             {% for item in invoiceItems %}
                 <tr class="item">
-                    <td>{{item.item_name|e}}<br><span class="desc">{{item.item_description|e}}</span></td>
-                    <td>{{item.item_price|e}}</td>
+                    <td>{{item.item_name|e}}<br><span class="desc"><small>{{item.item_description|e}}</small></span></td>
                     <td>{{item.item_quantity|e}}</td>
                     <td>{{item.item_price|e}}</td>
+                    <td style="text-align:right">{{item.item_total|e}}</td>
                 </tr>
             {% endfor %}
 
@@ -86,7 +79,7 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td>
+                <td style="text-align:right">
                    Total: ${{invoice_total}}<br>
                    Paid: ${{invoice_paid}}<br>
                    <b>Balnce: ${{invoice_balance}}</b><br>

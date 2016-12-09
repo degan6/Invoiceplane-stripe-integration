@@ -10,3 +10,6 @@ $container['HomeController'] = function ($container) {
     return new \App\Controllers\HomeController($container);
 };
 
+$container['WebhookController'] = function ($container) {
+    return new \App\Controllers\WebhookController($container);
+};

@@ -56,6 +56,14 @@ $container['view'] = function ($container)  {
     return $view;
 };
 
+$container['notFoundHandler'] = function ($c) {
+    return function ($request, $response) use ($c) {
+        return $c['response']
+            ->withStatus(404)
+            ->withHeader('Content-Type', 'text/html')
+            ->withRedirect($c->router->pathFor('notFound'));
+    };
+};
 
 $container['validator'] = function ($container) {
     return new App\Validation\Validator;
