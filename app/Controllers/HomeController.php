@@ -148,7 +148,8 @@ class HomeController extends Controller
               'amount'   => $blanceInCents,
               'currency' => 'usd',
               'receipt_email' => $client[0]['client_email'],
-              'metadata' => array('invoice_number' => $invoice[0]['invoice_number'])
+              'metadata' => array('invoice_number' => $invoice[0]['invoice_number']),
+              'description' => 'Invoice #' . $invoice[0]['invoice_number']
           ));
           $_SESSION['charge'] = $charge->id;
         } catch(\Stripe\Error\Card $e) {
