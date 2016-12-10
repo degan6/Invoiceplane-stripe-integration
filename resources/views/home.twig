@@ -4,15 +4,15 @@
 <div class="container">
     {% if invoice_status_id == 4 %}
     <div class="alert alert-info text-center">
-        Good news! This Invoice has been paid in full.
+        Good news! This Invoice has been paid in full. No action needs to be taken by you.
     </div>
     {% elseif invoice_overdue == 1 %}
         <div class="alert alert-danger text-center">
-            This invoice is overdue, please pay immediately to avoid late charges.
+            This invoice is overdue, please pay immediately.
         </div>
     {% elseif invoice_status_id == 1 %}
         <div class="alert alert-danger text-center">
-            Hold on there, this invoice is a draft and could change. Please wait until it has been finalized before paying.
+            Hold on there, this invoice is subject to change. Please wait until it has been finalized before paying.
         </div>
     {% endif %}
 </div>
