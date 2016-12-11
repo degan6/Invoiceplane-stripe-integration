@@ -34,7 +34,9 @@ class HomeController extends Controller
         $db->where('client_id', $invoice[0]['client_id']);
         $client = $db->get('clients');
 
-         //var_dump($invoice);
+        //user
+        $db->where('user_id', USER_ID);
+        $user = $db->get('users');
 
         $dueDate = new \DateTime($invoice[0]['invoice_date_due']);
         $now     = new \DateTime('now');
@@ -63,6 +65,16 @@ class HomeController extends Controller
             'client_phone' => $client[0]['client_phone'],
             'client_email' => $client[0]['client_email'],
             'client_web' => $client[0]['client_web'],
+            'user_email' => $user[0]['user_id'],
+            'user_email' => $user[0]['user_email'],
+            'user_name' =>  $user[0]['user_name'],
+            'user_company' => $user[0]['user_company'],
+            'user_address_1' => $user[0]['user_address_1'],
+            'user_address_2' => $user[0]['user_address_2'],
+            'user_city' => $user[0]['user_city'],
+            'user_state' => $user[0]['user_state'],
+            'user_zip' => $user[0]['user_zip'],
+            'user_web' => $user[0]['user_state'],
             'title' => 'Invoice #' . $invoice[0]['invoice_number'] . ' | Degan.org'
         ];
 

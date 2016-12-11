@@ -23,10 +23,17 @@
                     <table>
                         <tr>
                             <td >
-                                ***REMOVED***<br>
-                                ***REMOVED***<br>
-                                ***REMOVED***<br>
-                                <a href="mailto:***REMOVED***?subject=Invoice {{ invoice_number }}">***REMOVED***</a><br>
+                                {{ user_name }}<br>
+                                {% if user_company is not empty %}{{user_company}}<br>{% endif %}
+                                {% if user_address_1 is not empty %}{{user_address_1}}<br>{% endif %}
+                                {% if user_address_2 is not empty %}{{user_address_2}}<br>{% endif %}
+
+                                {% if user_city is not empty %}{{user_city}},{% else %}<br>{% endif %}
+                                {% if user_state is not empty %}{{user_state}}{% else %}<br>{% endif %}
+                                {% if user_zip is not empty %}{{user_zip}}<br>{% else %}<br>{% endif %}
+
+                                {% if user_phone is not empty %}{{user_phone}}<br>{% endif %}
+                                <a href="mailto:{{ user_email }}?subject=Invoice {{ invoice_number }}">{{ user_email }}</a><br>
                             </td>
                             
                             <td>
@@ -98,14 +105,13 @@
                 <form action="{{ path_for('stripetoken', {'invoiceURLKey' : invoiceKey}) }}" method="post">
                   <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
                           data-key="{{ stripe_pub_key }}"
-                          data-name="Pay ***REMOVED***"
+                          data-name="Pay David Egan"
                           data-description="Invoice Number {{invoice_number}}"
                           data-amount="{{invoice_balance * 100}}"
                           data-locale="auto"
                           data-zip-code="true"
                           data-billing-address="true"
                           data-email="{{client_email}}"
-                          
                           >
                     </script>
                 </form>
