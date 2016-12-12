@@ -40,7 +40,6 @@ class HomeController extends Controller
 
         $dueDate = new \DateTime($invoice[0]['invoice_date_due']);
         $now     = new \DateTime('now');
-        $interval = $dueDate->diff($now);
 
          $data = [
             'stripe_pub_key' => STRIPE_PUB_KEY,
