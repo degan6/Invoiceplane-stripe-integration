@@ -1,4 +1,17 @@
 {
+    "name": "degan6/InvoicePlane-Stripe-Integration",
+    "description": "A small app that integrates with InvoicePlane at a database level written in Slim",
+    "keywords": ["Stripe", "InvoicePlane", "Payments"],
+    "homepage": "https://github.com/degan6/InvoicePlane-Stripe-Integration",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "David Egan",
+            "email": "dwe@eganrm.com",
+            "homepage": "https://degan.org",
+            "role": "Developer"
+        }
+    ],
     "require": {
         "slim/slim": "^3.0",
         "slim/twig-view": "^2.1",
