@@ -9,7 +9,7 @@ class Validator
 {
     protected $errors;
 
-    public function validate($request, array $rules)
+    public function validate(\Slim\Http\Request $request, array $rules)
     {
         foreach ($rules as $field => $rule) {
             try {
