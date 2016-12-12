@@ -39,7 +39,7 @@ $container['flash'] = function ($container) {
     return new \Slim\Flash\Messages;
 };
 
-$container['view'] = function ($container)  {
+$container['view'] = function (\Slim\Container $container)  {
     $view = new \Slim\Views\Twig(__DIR__ . '/../resources/views', [
         'cache' => false,
     ]);
@@ -56,7 +56,7 @@ $container['view'] = function ($container)  {
     return $view;
 };
 
-$container['notFoundHandler'] = function ($c) {
+$container['notFoundHandler'] = function (\Slim\Container $c) {
     return function ($request, $response) use ($c) {
         return $c['response']
             ->withStatus(404)
@@ -65,13 +65,13 @@ $container['notFoundHandler'] = function ($c) {
     };
 };
 
-$container['validator'] = function ($container) {
+$container['validator'] = function (\Slim\Container $container) {
     return new App\Validation\Validator;
 };
 
 require_once 'Controllers.php';
 
-$container['csrf'] = function ($container) {
+$container['csrf'] = function (\Slim\Container $container) {
     return new \Slim\Csrf\Guard;
 };
 
@@ -85,4 +85,3 @@ $app->add(new \App\Middleware\CsrfViewMiddleware($container));
 v::with('App\\Validation\\Rules\\');
 
 require __DIR__ . '/../app/routes.php';
-
