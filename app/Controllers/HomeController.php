@@ -164,9 +164,8 @@ class HomeController extends Controller
           ));
           $_SESSION['charge'] = $charge->id;
         } catch(\Stripe\Error\Card $e) {
-          var_dump($e);
 
-          $this->flash->addMessage('error', 'Could not sign you in with those details.');
+          $this->flash->addMessage('error', 'A problem with the payment occurred.');
           return $response->withRedirect($this->router->pathFor('home', ['invoiceURLKey' => $invoiceKey]));
         }
 
