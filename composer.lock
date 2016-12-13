@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e5403a93772a914afab11ea917fb0e32",
-    "content-hash": "12fab8a13899d6d8b166a980a6b02fc8",
+    "hash": "465a8e4a6b79be42b5c6972f96cd46a9",
+    "content-hash": "c79facfc4ed98582688a9a2f1a0d5e6d",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -88,7 +88,7 @@
         },
         {
             "name": "joshcam/mysqli-database-class",
-            "version": "dev-master",
+            "version": "v2.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/joshcam/PHP-MySQLi-Database-Class.git",
@@ -777,9 +777,7 @@
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "joshcam/mysqli-database-class": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

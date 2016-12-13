@@ -19,7 +19,7 @@
         "slim/csrf": "^0.6.0",
         "slim/flash": "^0.1.0",
         "dflydev/fig-cookies": "^1.0",
-        "joshcam/mysqli-database-class":"dev-master",
+        "joshcam/mysqli-database-class":"2.7",
         "stripe/stripe-php": "4.*"
     },
     "autoload": {
