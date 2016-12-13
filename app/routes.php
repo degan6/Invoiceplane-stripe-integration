@@ -1,20 +1,10 @@
 <?php
 
-use App\Middleware\AuthMiddleware;
-use App\Middleware\GuestMiddleware;
-use App\Middleware\ConfirmEmailMiddleware;
 
-$app->group('', function () use ($container) {
+$app->get('/invoice/{invoiceURLKey}[/]', 'HomeController:index')->setName('home');
 
-    $this->get('/invoice/{invoiceURLKey}[/]', 'HomeController:index')->setName('home');
+$app->post('/stripetoken/{invoiceURLKey}[/]', 'HomeController:stripetoken')->setName('stripetoken');
 
-    $this->post('/stripetoken/{invoiceURLKey}[/]', 'HomeController:stripetoken')->setName('stripetoken');
+$app->get('/paid/{invoiceURLKey}[/]', 'HomeController:paid')->setName('paid');
 
-    $this->get('/paid/{invoiceURLKey}[/]', 'HomeController:paid')->setName('paid');
-
-    $this->get('/invoice/', 'HomeController:noURLKey')->setName('notFound');
-
-});
-
-
-//});
+$app->get('/invoice/', 'HomeController:noURLKey')->setName('notFound');
