@@ -1,5 +1,5 @@
 {
-    "name": "degan6/InvoicePlane-Stripe-Integration",
+    "name": "degan6/invoiceplane-stripe-integration",
     "description": "A small app that integrates with InvoicePlane at a database level written in Slim",
     "keywords": ["Stripe", "InvoicePlane", "Payments"],
     "homepage": "https://github.com/degan6/InvoicePlane-Stripe-Integration",
